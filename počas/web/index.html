@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meteostanica - Živé Údaje</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">☀️</div>
+                <h2>Meteo</h2>
+            </div>
+            <nav class="sidebar-menu">
+                <button class="menu-btn active" onclick="switchTab(this, 'teplota', 'Teplota vzduchu')">
+                    <span class="icon">🌡️</span> <span class="text">Teplota</span>
+                </button>
+                <button class="menu-btn" onclick="switchTab(this, 'tlak', 'Tlak vzduchu')">
+                    <span class="icon">⏲️</span> <span class="text">Tlak</span>
+                </button>
+                <button class="menu-btn" onclick="switchTab(this, 'vlhkost', 'Vlhkosť vzduchu')">
+                    <span class="icon">💧</span> <span class="text">Vlhkosť</span>
+                </button>
+                <button class="menu-btn" onclick="switchTab(this, 'vietor', 'Rýchlosť vetra')">
+                    <span class="icon">💨</span> <span class="text">Vietor</span>
+                </button>
+                <button class="menu-btn" onclick="switchTab(this, 'kamery', 'Živá Kamera')">
+                    <span class="icon">📷</span> <span class="text">Kamera</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    <span class="status-text">Živé pripojenie</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div>
+                    <h1 id="main-title">Teplota vzduchu</h1>
+                    <p class="subtitle">Aktuálne meteorologické dáta z monitorovacej stanice</p>
+                </div>
+                <div class="time-badge" id="station-time">Čas: Načítavam...</div>
+            </header>
+
+            <div id="weather-section" class="content-section active">
+                <div class="dashboard-grid">
+                    <div class="card val-card">
+                        <div class="card-header">
+                            <h3>Aktuálny stav</h3>
+                            <span class="badge">Live</span>
+                        </div>
+                        <div class="value-display">
+                            <span class="main-value" id="live-value">--</span>
+                        </div>
+                        <div class="card-footer">
+                            <p id="last-sync">Posledná synchronizácia: Čakám...</p>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>História za posledné hodiny</h3>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="weatherChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="camera-section" class="content-section">
+                <div class="card camera-card">
+                    <div class="card-header">
+                        <h3>Záber z monitorovacej kamery</h3>
+                        <span class="badge success">Online</span>
+                    </div>
+                    <div class="camera-stream-container">
+                        <div id="camera-loading" class="cam-placeholder">
+                            <div class="spinner"></div>
+                            <p>Načítavam živý obraz...</p>
+                        </div>
+                        <img id="camera-img" src="" alt="Živý záber z kamery" style="display: none;" onerror="handleCameraError()">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
