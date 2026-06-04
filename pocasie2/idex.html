@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NitraTMG - Summer Glassmorphism</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <header class="top-navbar">
+            <div class="brand-section">
+                <div class="logo-container" style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:24px;">☀️</span>
+                    <h2>NitraTMG</h2>
+                </div>
+            </div>
+            
+            <nav class="navbar-menu">
+                <button class="menu-btn active" onclick="switchTab(this, 'teplota', 'Teplota vzduchu')">Teplota</button>
+                <button class="menu-btn" onclick="switchTab(this, 'tlak', 'Tlak vzduchu')">Tlak</button>
+                <button class="menu-btn" onclick="switchTab(this, 'vlhkost', 'Vlhkosť vzduchu')">Vlhkosť</button>
+                <button class="menu-btn" onclick="switchTab(this, 'vietor', 'Rýchlosť vetra')">Vietor</button>
+                
+                <div class="camera-dropdown">
+                    <button class="dropdown-toggle">📷 Kamera ▼</button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item" onclick="switchTab(this, 'kamery', 'Živá Kamera 1', 1)">Kamera 1</div>
+                        <div class="dropdown-item" onclick="switchTab(this, 'kamery', 'Živá Kamera 2', 2)">Kamera 2</div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="navbar-status">
+                <div style="background:rgba(255,255,255,0.4); padding:6px 14px; border-radius:20px; border:1px solid var(--glass-border);">
+                    <span style="font-size:13px; color:#16a34a; font-weight:800;">● Live</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+            <div id="weather-section" class="content-section" style="display:block;">
+                
+                <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <div>
+                        <h1 id="main-title" class="main-page-title">Teplota vzduchu</h1>
+                        <p class="subtitle" style="color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.1);">Aktuálne meteorologické dáta z monitorovacej stanice Nitra</p>
+                    </div>
+                    <div class="time-badge" id="station-time" style="background:rgba(255,255,255,0.4); color:var(--text-dark); padding:8px 16px; border-radius:30px; font-size:14px; font-weight:700; border:1px solid var(--glass-border);">Čas: Načítavam...</div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="left-column">
+                        <div class="card" style="background: rgba(255,255,255,0.35);">
+                            <div style="display:flex; justify-content:space-between; font-weight:700;">
+                                <h3 class="white-title">Aktuálny stav</h3>
+                                <span style="color: var(--accent-blue);">Online</span>
+                            </div>
+                            <div class="value-display">
+                                <span class="main-value" id="live-value">--</span>
+                            </div>
+                            <div class="card-footer" id="last-sync" style="font-size:12px; color:var(--text-muted); text-align:center;">Posledná synchronizácia: Čakám...</div>
+                        </div>
+
+                        <div class="card">
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-weight:700; color:var(--text-dark);">
+                                <span>📋 História meraní</span>
+                            </div>
+                            
+                            <div id="history-content" class="history-content">
+                                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                                    <button class="menu-btn active" id="btn-5d" style="padding:6px; flex:1; font-size:12px;" onclick="loadHistoryDays(5)">5 dní</button>
+                                    <button class="menu-btn" id="btn-10d" style="padding:6px; flex:1; font-size:12px;" onclick="loadHistoryDays(10)">10 dní</button>
+                                </div>
+                                <div id="days-container" style="display:flex; flex-direction:column; gap:8px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="card" style="min-height:340px; display:flex; flex-direction:column;">
+                            <h3 id="chart-title" style="color:var(--text-dark); margin-bottom:15px;">Grafický vývoj</h3>
+                            <div style="position:relative; flex-grow:1; height:240px;">
+                                <canvas id="weatherChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card map-card" id="map-card">
+                            <h3 id="map-title" style="color:var(--text-dark);">Meteorologická mapa zrážok a oblačnosti - Nitra</h3>
+                            <div class="map-container">
+                                <iframe id="map-iframe" src="https://openweathermap.org/weathermap?basemap=map&cities=false&layer=temperature&lat=48.31&lon=18.09&zoom=8"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="camera-section" class="content-section" style="display:none; margin-top: 10px;">
+                <div class="card camera-card">
+                    <h3 id="camera-title" style="color:var(--text-dark); margin-bottom:15px;">Záber z kamery</h3>
+                    <div class="camera-stream-container" id="camera-container-element">
+                        <button class="fullscreen-btn" onclick="toggleFullscreen()">📺 Na celú obrazovku</button>
+                        <div id="camera-loading"><p style="color:var(--text-dark);">Načítavam obraz...</p></div>
+                        <img id="camera-img" src="" alt="Kamera" style="display: none;" onerror="handleCameraError()">
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

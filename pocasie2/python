@@ -1,0 +1,38 @@
+import requests
+
+url = "https://example.com/data"
+
+response = requests.get(
+    url,
+    auth=("sks", "kolube")
+)
+
+print(response.text)
+# Tento kód pridaj do server.py pod pôvodnú /api/live funkciu
+
+@app.route('/api/camera1', methods=['GET'])
+def get_camera1():
+    try:
+        response = requests.get(
+            "https://projekttb.sksnr.sk/data/camera.jpg", 
+            auth=HTTPBasicAuth(USERNAME, PASSWORD),
+            timeout=5
+        )
+        response.raise_for_status()
+        # Vrátime surový obrázok s upraveným typom obsahu (jpeg)
+        return response.content, 200, {'Content-Type': 'image/jpeg'}
+    except Exception as e:
+        return jsonify({"error": "Kamera 1 nedostupná", "details": str(e)}), 500
+
+@app.route('/api/camera2', methods=['GET'])
+def get_camera2():
+    try:
+        response = requests.get(
+            "https://projekttb.sksnr.sk/data/camera2.jpg", 
+            auth=HTTPBasicAuth(USERNAME, PASSWORD),
+            timeout=5
+        )
+        response.raise_for_status()
+        return response.content, 200, {'Content-Type': 'image/jpeg'}
+    except Exception as e:
+        return jsonify({"error": "Kamera 2 nedostupná", "details": str(e)}), 500

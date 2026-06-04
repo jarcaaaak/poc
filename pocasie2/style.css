@@ -1,0 +1,352 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght=500;800&family=Plus+Jakarta+Sans:wght=400;600;800&display=swap');
+
+:root {
+    /* LETNÁ SLNEČNÁ OBREHA - Pôvodné svetlé farby */
+    --bg-gradient: linear-gradient(135deg, #3a7bd5 0%, #6fa8dc 50%, #fff2cc 100%);
+    
+    /* JASNÝ BIELY SKLENENÝ EFEKT (Frosted Glass) */
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-navbar: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-shine: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 50%);
+    
+    --accent-blue: #2563eb;      
+    --text-dark: #1e293b;     
+    --text-muted: #475569;    
+    --text-light: #ffffff;
+    --shadow-3d: 0 15px 35px rgba(31, 38, 135, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    --border-radius: 24px;
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-dark);              
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    z-index: 5;
+}
+
+/* HORNÁ LIŠTA */
+.top-navbar {
+    height: 85px; 
+    background: var(--glass-navbar);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: var(--shadow-3d);
+}
+
+.brand-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+}
+
+/* NAVBAR MENU */
+.navbar-menu {
+    display: flex;
+    gap: 12px;
+    height: 100%;
+    align-items: center;
+    z-index: 1002;
+}
+
+.menu-btn {
+    padding: 10px 22px; 
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    color: var(--text-dark);
+    font-size: 14px; 
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.menu-btn.active {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: white;
+    transform: translateY(0) scale(1.02);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* OPRAVENÝ DROPDOWN PRE KAMERU (Zväčšenie a ochrana proti zmiznutiu) */
+.camera-dropdown {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px; /* Neviditeľný mostík pod tlačidlom zabráni zatvoreniu */
+    margin-bottom: -15px;
+    transition: var(--transition);
+}
+
+.camera-dropdown:hover {
+    transform: scale(1.05); /* Mierne zväčšenie celého prvku pri hoveri */
+}
+
+.dropdown-toggle {
+    padding: 10px 22px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.camera-dropdown:hover .dropdown-toggle {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: -5px; /* Posunuté bližšie k tlačidlu */
+    width: 100%;
+    min-width: 150px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow: var(--shadow-3d);
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1010;
+}
+
+.camera-dropdown:hover .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-item {
+    background: transparent;
+    color: var(--text-dark);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: var(--accent-blue);
+    color: white;
+}
+
+/* SKLENENÉ KARTY */
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-dark);
+    border-radius: var(--border-radius);
+    padding: 28px;
+    box-shadow: var(--shadow-3d);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--glass-shine);
+    pointer-events: none;
+}
+
+.main-content {
+    margin-top: 115px; 
+    flex-grow: 1;
+    padding: 30px;
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 10;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr; 
+    gap: 28px;
+}
+
+.left-column, .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.value-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 0;
+}
+
+.white-title {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.main-value {
+    font-size: 64px;
+    font-weight: 800;
+    color: #ffffff; 
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* HISTÓRIA */
+.history-content {
+    display: block;
+    margin-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 16px;
+}
+
+.day-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 16px;
+}
+
+.day-details.open {
+    max-height: 160px;
+    padding: 12px 16px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* MAPA */
+.map-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.map-container {
+    width: 100%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    aspect-ratio: 16 / 9;
+    position: relative;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ZMENŠENÝ FORMÁT KAMERY ABY SA ZMESTILA BEZ SKROLOVANIA */
+.camera-card {
+    max-width: 850px;
+    margin: 0 auto; /* Vycentrovanie karty na stred */
+    padding: 20px !important;
+}
+
+.camera-stream-container {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--glass-border);
+    position: relative; /* Dôležité pre absolútne umiestnenie tlačidla */
+    overflow: hidden;
+}
+
+.camera-stream-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Obrázok sa prispôsobí bez orezania */
+}
+
+/* TLAČIDLO PRE FULLSCREEN */
+.fullscreen-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: var(--transition);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fullscreen-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+}
+/* NOVÉ ŠTÝLY PRE BIELY HLAVNÝ NADPIS STRÁNKY */
+.main-page-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
